@@ -3,7 +3,7 @@
  * pour qu'elle fonctionne sans connexion.
  * À chaque nouvelle version de l'application, augmenter le numéro de VERSION.
  */
-const VERSION = 'budget-v13';
+const VERSION = 'budget-v14';
 const FILES = [
   './',
   'index.html',
@@ -20,7 +20,10 @@ const FILES = [
 ];
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
+  // cache: 'reload' : on met de côté les fichiers tout juste téléchargés, jamais une ancienne copie
+  event.waitUntil(caches.open(VERSION)
+    .then(c => c.addAll(FILES.map(f => new Request(f, { cache: 'reload' }))))
+    .then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', event => {
@@ -32,10 +35,12 @@ self.addEventListener('activate', event => {
 });
 
 // Réseau d'abord (pour recevoir les mises à jour), copie locale si hors connexion.
+// cache: 'no-cache' oblige à revérifier chaque fichier auprès du site : sans cela, le navigateur
+// réutiliserait sa propre copie jusqu'à 10 minutes et une mise à jour pourrait tarder.
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) return;
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request.url, { cache: 'no-cache' })
       .then(res => {
         const copy = res.clone();
         caches.open(VERSION).then(c => c.put(event.request, copy));
