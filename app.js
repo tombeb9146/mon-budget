@@ -1603,10 +1603,60 @@ function openChangePinSheet() {
 /* =========================================================
  * Démarrage
  * ========================================================= */
+/* Page d'installation : affichée quand le lien est ouvert dans un navigateur,
+ * pas quand l'application est lancée depuis son icône (mode « standalone »). */
+const SKIP_INSTALL_KEY = 'budget.skipInstall';
+const isInstalledApp = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+let installPrompt = null;
+
+function startApp() {
+  $('#install').hidden = true;
+  showLock(Store.hasVault() ? 'unlock' : 'name');
+}
+
+function showInstallPage() {
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isAndroid = /Android/.test(ua);
+  // On met en avant les explications du téléphone utilisé
+  if (isIOS) $('#install-android').hidden = true;
+  if (isAndroid) $('#install-iphone').hidden = true;
+  if (!isIOS && !isAndroid) $('#install-pc').hidden = false;
+  if (isAndroid) $('#install-android').classList.add('first');
+  if (isIOS) $('#install-iphone').classList.add('first');
+  $('#install').hidden = false;
+}
+
+// Chrome (Android) propose l'installation en un appui : on remplace sa petite bannière par notre bouton
+addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  installPrompt = e;
+  $('#install-ready').hidden = false;
+});
+$('#install-btn').addEventListener('click', async () => {
+  if (!installPrompt) return;
+  installPrompt.prompt();
+  const choice = await installPrompt.userChoice;
+  installPrompt = null;
+  if (choice.outcome === 'accepted') $('#install-ready').hidden = true;
+});
+addEventListener('appinstalled', () => {
+  $('#install-ready').hidden = true;
+  $('#install-done').hidden = false;
+});
+$('#install-skip').addEventListener('click', () => {
+  try { localStorage.setItem(SKIP_INSTALL_KEY, '1'); } catch (e) { /* stockage indisponible */ }
+  startApp();
+});
+
 if (!window.crypto || !crypto.subtle) {
   document.body.innerHTML = '<p style="padding:24px">Cette application doit être ouverte depuis une adresse sécurisée (https).</p>';
 } else {
-  showLock(Store.hasVault() ? 'unlock' : 'name');
+  let skip = false;
+  try { skip = localStorage.getItem(SKIP_INSTALL_KEY) === '1'; } catch (e) { /* stockage indisponible */ }
+  // Quelqu'un qui utilise déjà l'application dans le navigateur n'a pas besoin de la page d'installation
+  if (isInstalledApp() || skip || Store.hasVault()) startApp();
+  else showInstallPage();
 }
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {

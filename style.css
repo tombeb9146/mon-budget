@@ -71,6 +71,19 @@ button { cursor: pointer; }
   border: 2px solid var(--brand); display: inline-block;
 }
 .pin-dots i.on { background: var(--brand); }
+/* Page d'installation */
+.install { align-items: flex-start; }
+.install .lock-inner { max-width: 420px; padding: 8px 0 32px; }
+.install-card {
+  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 14px 16px; margin-top: 12px; text-align: left; font-size: 16px;
+}
+.install-card h2 { font-size: 17px; margin: 0 0 6px; }
+.install-card ol, .install-card ul { margin: 0; padding-left: 22px; }
+.install-card li { margin: 6px 0; }
+.install-card p { margin: 6px 0 0; }
+.install-card.first { border: 2px solid var(--brand); }
+
 .name-step input { text-align: center; font-size: 20px; }
 .hello { margin: 4px 4px 10px; font-size: 18px; font-weight: 700; }
 .lock-error { color: var(--red); min-height: 1.4em; margin: 4px 0 12px; font-weight: 600; }

@@ -12,8 +12,63 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Page d'installation : affichée quand le lien est ouvert dans le navigateur
+       (et pas depuis l'application installée) -->
+  <section id="install" class="lock install" hidden>
+    <div class="lock-inner">
+      <div class="lock-logo">€</div>
+      <h1>Mon Budget</h1>
+      <p class="lock-msg">Votre budget personnel, privé et chiffré,<br>directement sur votre téléphone.</p>
+
+      <div id="install-ready" hidden>
+        <button class="btn" id="install-btn" type="button">📲 Installer l'application</button>
+        <p class="small muted">Un seul appui, puis confirmez avec « Installer ».</p>
+      </div>
+      <div id="install-done" class="install-card" hidden>
+        <b>✅ Application installée !</b>
+        <p>Ouvrez-la maintenant depuis l'icône <b>€ Budget</b> de votre écran d'accueil.</p>
+      </div>
+
+      <div class="install-card" id="install-android">
+        <h2>📱 Sur Android (Chrome)</h2>
+        <ol>
+          <li>Touchez les <b>trois points ⋮</b> en haut à droite de Chrome.</li>
+          <li>Touchez <b>« Installer l'application »</b><br><span class="muted">(ou « Ajouter à l'écran d'accueil »).</span></li>
+          <li>Confirmez avec <b>« Installer »</b>.</li>
+          <li>Ouvrez l'application depuis l'icône <b>€ Budget</b> de votre écran d'accueil.</li>
+        </ol>
+      </div>
+
+      <div class="install-card" id="install-iphone">
+        <h2>🍎 Sur iPhone (Safari)</h2>
+        <ol>
+          <li>Ouvrez ce lien dans <b>Safari</b>.</li>
+          <li>Touchez le bouton <b>Partager</b> (le carré avec une flèche vers le haut).</li>
+          <li>Touchez <b>« Sur l'écran d'accueil »</b>, puis <b>« Ajouter »</b>.</li>
+          <li>Ouvrez l'application depuis l'icône <b>€ Budget</b> de votre écran d'accueil.</li>
+        </ol>
+      </div>
+
+      <div class="install-card" id="install-pc" hidden>
+        <h2>💻 Vous êtes sur un ordinateur</h2>
+        <p>Cette application est faite pour le téléphone : ouvrez ce même lien sur votre téléphone pour l'installer.</p>
+      </div>
+
+      <div class="install-card">
+        <h2>🔒 Bon à savoir</h2>
+        <ul>
+          <li>Pas de compte, pas d'inscription : vous choisirez juste un prénom et un code.</li>
+          <li>Vos données restent uniquement sur votre téléphone.</li>
+          <li>L'application fonctionne même sans Internet.</li>
+        </ul>
+      </div>
+
+      <button class="btn ghost" id="install-skip" type="button">Continuer sans installer</button>
+    </div>
+  </section>
+
   <!-- Écran de verrouillage / création du code -->
-  <section id="lock" class="lock">
+  <section id="lock" class="lock" hidden>
     <div class="lock-inner">
       <div class="lock-logo">€</div>
       <h1 id="lock-title">Mon Budget</h1>
