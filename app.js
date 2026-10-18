@@ -228,8 +228,7 @@ function renderLock(error = '') {
     w.hidden = true;
   } else if (isName) {
     w.hidden = false;
-    w.innerHTML = 'Vos données restent <b>uniquement sur ce téléphone</b>, protégées par un code que vous allez choisir. ' +
-      'Chaque membre de la famille installe l\'application sur son propre téléphone : personne ne voit le budget des autres.';
+    w.innerHTML = 'Vos données restent <b>uniquement sur ce téléphone</b>, protégées par un code que vous allez choisir.';
   } else if (lock.mode === 'restore') {
     w.hidden = false;
     w.innerHTML = (Store.hasVault() ? '<b>Attention :</b> les données actuelles de cet appareil seront <b>remplacées</b> par celles de la sauvegarde. ' : '') +

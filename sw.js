@@ -3,7 +3,7 @@
  * pour qu'elle fonctionne sans connexion.
  * À chaque nouvelle version de l'application, augmenter le numéro de VERSION.
  */
-const VERSION = 'budget-v12';
+const VERSION = 'budget-v13';
 const FILES = [
   './',
   'index.html',
